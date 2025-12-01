@@ -4,6 +4,8 @@ import clients.CourierClient;
 import clients.OrderClient;
 import helpers.CourierTestHelper;
 import helpers.OrderTestHelper;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.Courier;
 import models.Order;
@@ -41,6 +43,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с валидными ID")
+    @Description("Проверка принятия заказа с валидными ID заказа и курьера: должен вернуться код ответа 200 и ok: true")
     public void acceptOrder_WithValidIds_ShouldReturn200AndOkTrue() {
         Response response = orderClient.acceptOrder(createdOrderId, testCourierId);
 
@@ -53,6 +57,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа без ID заказа")
+    @Description("Проверка принятия заказа без указания ID заказа: должен вернуться код ответа 400")
     public void acceptOrder_WithoutOrderId_ShouldReturn400() {
         String emptyOrderId = "";
 
@@ -62,6 +68,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа без ID курьера")
+    @Description("Проверка принятия заказа без указания ID курьера: должен вернуться код ответа 400")
     public void acceptOrder_WithoutCourierId_ShouldReturn400() {
         String emptyCourierId = "";
         Response response = orderClient.acceptOrder(createdOrderId, emptyCourierId);
@@ -69,6 +77,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с null ID заказа")
+    @Description("Проверка принятия заказа с null ID заказа: должен вернуться код ответа 400")
     public void acceptOrder_WithNullOrderId_ShouldReturn400() {
         String nullOrderId = null;
         Response response = orderClient.acceptOrder(nullOrderId, testCourierId);
@@ -76,6 +86,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с null ID курьера")
+    @Description("Проверка принятия заказа с null ID курьера: должен вернуться код ответа 400")
     public void acceptOrder_WithNullCourierId_ShouldReturn400() {
         String nullCourierId = null;
         Response response = orderClient.acceptOrder(createdOrderId, nullCourierId);
@@ -83,6 +95,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с несуществующим ID заказа")
+    @Description("Проверка принятия заказа с несуществующим ID заказа: должен вернуться код ответа 404")
     public void acceptOrder_WithNonExistentOrderId_ShouldReturn404() {
         String nonExistentOrderId = "999999";
         Response response = orderClient.acceptOrder(nonExistentOrderId, testCourierId);
@@ -90,6 +104,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с несуществующим ID курьера")
+    @Description("Проверка принятия заказа с несуществующим ID курьера: должен вернуться код ответа 404")
     public void acceptOrder_WithNonExistentCourierId_ShouldReturn404() {
         String nonExistentCourierId = "888888";
         Response response = orderClient.acceptOrder(createdOrderId, nonExistentCourierId);
@@ -97,6 +113,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие уже принятого заказа")
+    @Description("Проверка принятия уже принятого заказа: должен вернуться код ответа 409")
     public void acceptOrder_AlreadyAccepted_ShouldReturn409() {
         Response firstAccept = orderClient.acceptOrder(createdOrderId, testCourierId);
         orderClient.validateSuccessfulAccept(firstAccept);
@@ -105,6 +123,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа и получение информации о заказе")
+    @Description("Проверка что после принятия заказа в информации о заказе отображается назначение курьера")
     public void acceptOrder_ThenGetOrder_ShouldShowCourierAssignment() {
         Response acceptResponse = orderClient.acceptOrder(createdOrderId, testCourierId);
         orderClient.validateSuccessfulAccept(acceptResponse);
@@ -123,6 +143,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с невалидным форматом ID заказа")
+    @Description("Проверка принятия заказа с невалидным форматом ID заказа: должен вернуться код ответа 400")
     public void acceptOrder_WithInvalidOrderIdFormat_ShouldReturn400() {
         String invalidOrderId = "invalid_id";
         Response response = orderClient.acceptOrder(invalidOrderId, testCourierId);
@@ -130,6 +152,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа с невалидным форматом ID курьера")
+    @Description("Проверка принятия заказа с невалидным форматом ID курьера: должен вернуться код ответа 400")
     public void acceptOrder_WithInvalidCourierIdFormat_ShouldReturn400() {
         String invalidCourierId = "invalid_courier_id";
         Response response = orderClient.acceptOrder(createdOrderId, invalidCourierId);
@@ -137,6 +161,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие заказа и его завершение")
+    @Description("Проверка корректной последовательности действий: принятие заказа и его последующее завершение")
     public void acceptOrder_ThenFinish_ShouldWorkCorrectly() {
         Response acceptResponse = orderClient.acceptOrder(createdOrderId, testCourierId);
         orderClient.validateSuccessfulAccept(acceptResponse);
@@ -145,6 +171,8 @@ public class OrderAcceptTest {
     }
 
     @Test
+    @DisplayName("Принятие отмененного заказа")
+    @Description("Проверка принятия отмененного заказа: должен вернуться код ответа 404")
     public void acceptOrder_CancelledOrder_ShouldReturn404() {
         Response cancelResponse = orderClient.cancelOrder(String.valueOf(createdOrderTrack));
         orderClient.validateSuccessfulCancel(cancelResponse);

@@ -2,6 +2,8 @@ package courier;
 
 import clients.CourierClient;
 import helpers.CourierTestHelper;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.Courier;
 import org.junit.After;
@@ -20,6 +22,8 @@ public class CourierDeletionTest {
     }
 
     @Test
+    @DisplayName("Удаление курьера с валидным ID")
+    @Description("Проверка успешного удаления курьера с валидным ID: должен вернуться код ответа 200 и ok: true")
     public void deleteCourier_WithValidId_ShouldReturn200AndOkTrue() {
         Courier courier = courierHelper.setupTestCourier();
         String createdCourierId = courierHelper.getCreatedCourierId();
@@ -31,6 +35,8 @@ public class CourierDeletionTest {
     }
 
     @Test
+    @DisplayName("Удаление курьера без ID")
+    @Description("Проверка удаления курьера без указания ID: должен вернуться код ответа 400")
     public void deleteCourier_WithoutId_ShouldReturn400() {
         String emptyId = "";
 
@@ -45,6 +51,8 @@ public class CourierDeletionTest {
     }
 
     @Test
+    @DisplayName("Удаление курьера с null ID")
+    @Description("Проверка удаления курьера с null ID: должен вернуться код ответа 400")
     public void deleteCourier_WithNullId_ShouldReturn400() {
         Response response = courierClient.deleteCourier(null);
 
@@ -55,6 +63,8 @@ public class CourierDeletionTest {
     }
 
     @Test
+    @DisplayName("Удаление несуществующего курьера")
+    @Description("Проверка удаления несуществующего курьера: должен вернуться код ответа 404")
     public void deleteCourier_WithNonExistentId_ShouldReturn404() {
         String nonExistentId = "999999";
 
@@ -69,6 +79,8 @@ public class CourierDeletionTest {
     }
 
     @Test
+    @DisplayName("Повторное удаление уже удаленного курьера")
+    @Description("Проверка повторного удаления уже удаленного курьера: должен вернуться код ответа 404")
     public void deleteCourier_AlreadyDeleted_ShouldReturn404() {
         Courier courier = courierHelper.setupTestCourier();
         String createdCourierId = courierHelper.getCreatedCourierId();

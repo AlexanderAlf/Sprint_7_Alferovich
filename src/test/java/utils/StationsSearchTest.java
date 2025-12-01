@@ -1,6 +1,8 @@
 package utils;
 
 import clients.UtilsClient;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.Test;
 
@@ -11,6 +13,8 @@ public class StationsSearchTest {
     private final UtilsClient utilsClient = new UtilsClient();
 
     @Test
+    @DisplayName("Поиск станций с валидным запросом")
+    @Description("Проверка поиска станций с валидным запросом: должны возвращаться результаты поиска")
     public void searchStations_WithValidQuery_ShouldReturnStations() {
         String searchQuery = "Сокол";
 
@@ -21,6 +25,8 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Поиск станций с пустым запросом")
+    @Description("Проверка поиска станций с пустым запросом: должен возвращаться пустой список или все станции")
     public void searchStations_WithEmptyQuery_ShouldReturnEmptyOrAllStations() {
         String emptyQuery = "";
 
@@ -31,15 +37,19 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Поиск станций с null запросом")
+    @Description("Проверка поиска станций с null запросом: должен возвращаться пустой список или все станции")
     public void searchStations_WithNullQuery_ShouldReturnEmptyOrAllStations() {
         String nullQuery = null;
 
         Response response = utilsClient.searchStations(nullQuery);
 
         utilsClient.validateSuccessfulStationsSearch(response);
-        }
+    }
 
     @Test
+    @DisplayName("Поиск несуществующей станции")
+    @Description("Проверка поиска несуществующей станции: должен возвращаться пустой список")
     public void searchStations_WithNonExistentStation_ShouldReturnEmpty() {
         String nonExistentStation = "NonexistentStation12345";
 
@@ -50,6 +60,8 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Проверка структуры станции в результатах поиска")
+    @Description("Проверка что в результатах поиска станций присутствуют все необходимые поля")
     public void searchStations_CheckStationStructure() {
         String searchQuery = "Сокол";
 
@@ -64,6 +76,8 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Поиск станций с частичным совпадением")
+    @Description("Проверка поиска станций с частичным совпадением запроса: должны возвращаться результаты")
     public void searchStations_WithPartialMatch_ShouldReturnResults() {
         String partialQuery = "Соко";
 
@@ -74,6 +88,8 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Поиск станций с регистронезависимым запросом")
+    @Description("Проверка что поиск станций работает регистронезависимо: должны возвращаться результаты независимо от регистра")
     public void searchStations_WithCaseInsensitiveQuery_ShouldReturnResults() {
         String lowerCaseQuery = "сокол";
         String upperCaseQuery = "СОКОЛ";
@@ -91,6 +107,8 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Проверка валидности данных в результатах поиска")
+    @Description("Проверка что данные станций в результатах поиска валидны: имя, номер и цвет должны соответствовать ожиданиям")
     public void searchStations_ResponseContainsValidData() {
         String searchQuery = "Сокол";
 
@@ -108,15 +126,19 @@ public class StationsSearchTest {
     }
 
     @Test
+    @DisplayName("Поиск станций со специальными символами")
+    @Description("Проверка поиска станций со специальными символами в запросе: сервер должен корректно обрабатывать такие запросы")
     public void searchStations_WithSpecialCharacters_ShouldHandleGracefully() {
         String specialCharsQuery = "!@#$%";
 
         Response response = utilsClient.searchStations(specialCharsQuery);
 
         utilsClient.validateSuccessfulStationsSearch(response);
-        }
+    }
 
     @Test
+    @DisplayName("Поиск станций с очень длинным запросом")
+    @Description("Проверка поиска станций с очень длинным запросом: сервер должен корректно обрабатывать длинные запросы без ошибок сервера")
     public void searchStations_WithVeryLongQuery_ShouldHandleGracefully() {
         String longQuery = "A".repeat(1000);
 

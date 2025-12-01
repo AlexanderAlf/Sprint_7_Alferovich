@@ -2,6 +2,8 @@ package courier;
 
 import clients.CourierClient;
 import helpers.CourierTestHelper;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.Courier;
 import org.junit.After;
@@ -28,6 +30,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Получение количества заказов курьера с валидным ID")
+    @Description("Проверка получения количества заказов курьера с валидным ID: должен вернуться код ответа 200 и количество заказов")
     public void getCourierOrdersCount_WithValidId_ShouldReturn200AndOrdersCount() {
 
         Response response = courierClient.getCourierOrdersCount(createdCourierId);
@@ -39,6 +43,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Получение количества заказов курьера без ID")
+    @Description("Проверка получения количества заказов курьера без ID: должен вернуться код ответа 400")
     public void getCourierOrdersCount_WithEmptyId_ShouldReturn400() {
         String emptyId = "";
         Response response = courierClient.getCourierOrdersCount(emptyId);
@@ -51,6 +57,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Получение количества заказов курьера с null ID")
+    @Description("Проверка получения количества заказов курьера с null ID: должен вернуться код ответа 400")
     public void getCourierOrdersCount_WithNullId_ShouldReturn400() {
 
         Response response = courierClient.getCourierOrdersCount(null);
@@ -60,6 +68,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Получение количества заказов несуществующего курьера")
+    @Description("Проверка получения количества заказов несуществующего курьера: должен вернуться код ответа 404")
     public void getCourierOrdersCount_WithNonExistentId_ShouldReturn404() {
         String nonExistentId = "999999";
         Response response = courierClient.getCourierOrdersCount(nonExistentId);
@@ -72,6 +82,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Получение количества заказов удаленного курьера")
+    @Description("Проверка получения количества заказов удаленного курьера: должен вернуться код ответа 404")
     public void getCourierOrdersCount_WithDeletedCourier_ShouldReturn404() {
         Response deleteResponse = courierClient.deleteCourier(createdCourierId);
         courierClient.validateSuccessfulDeletion(deleteResponse);
@@ -85,6 +97,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Проверка корректности ID в ответе при получении количества заказов")
+    @Description("Проверка что в ответе при получении количества заказов содержится корректный ID курьера")
     public void getCourierOrdersCount_ResponseContainsCorrectId() {
         Response response = courierClient.getCourierOrdersCount(createdCourierId);
 
@@ -96,6 +110,8 @@ public class CourierOrdersCountTest {
     }
 
     @Test
+    @DisplayName("Проверка что новый курьер имеет 0 заказов")
+    @Description("Проверка что новый созданный курьер имеет 0 заказов в системе")
     public void getCourierOrdersCount_NewCourierHasZeroOrders() {
         Response response = courierClient.getCourierOrdersCount(createdCourierId);
 

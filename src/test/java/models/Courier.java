@@ -1,23 +1,20 @@
 package models;
 
-public class Courier {
-    private final String login;
-    private final String password;
-    private final String firstName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    public Courier(String login, String password, String firstName) {
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-    }
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Courier {
+    private String login;
+    private String password;
+    private String firstName;
 
     public Courier(String login, String password) {
         this.login = login;
         this.password = password;
         this.firstName = null;
     }
-
-    public String getLogin() { return login; }
-    public String getPassword() { return password; }
-    public String getFirstName() { return firstName; }
 }

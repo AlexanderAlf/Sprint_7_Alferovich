@@ -1,6 +1,8 @@
 package order;
 
 import clients.OrderClient;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.Test;
 import utils.TestDataGenerator;
@@ -15,6 +17,8 @@ public class OrderListTest {
     private final OrderClient orderClient = new OrderClient();
 
     @Test
+    @DisplayName("Получение списка заказов")
+    @Description("Проверка получения списка заказов: должна возвращаться полная структура ответа")
     public void getOrdersList_ShouldReturnCompleteStructure() {
         Response response = orderClient.getOrdersList();
 
@@ -29,6 +33,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов с ID курьера")
+    @Description("Проверка получения списка заказов с указанием ID курьера: должны возвращаться заказы конкретного курьера")
     public void getOrdersList_WithCourierId_ShouldReturnCourierOrders() {
         Integer existingCourierId = 1;
 
@@ -41,6 +47,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов с несуществующим ID курьера")
+    @Description("Проверка получения списка заказов с несуществующим ID курьера: должен вернуться код ответа 404")
     public void getOrdersList_WithNonExistentCourierId_ShouldReturn404() {
         Integer nonExistentCourierId = 999999;
 
@@ -50,6 +58,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов с указанием ближайших станций")
+    @Description("Проверка получения списка заказов с указанием ближайших станций: должны возвращаться отфильтрованные заказы")
     public void getOrdersList_WithNearestStation_ShouldReturnFilteredOrders() {
         List<String> stations = Arrays.asList("1", "2");
 
@@ -60,6 +70,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов с лимитом")
+    @Description("Проверка получения списка заказов с указанием лимита: должно возвращаться ограниченное количество заказов")
     public void getOrdersList_WithLimit_ShouldReturnLimitedOrders() {
         Integer limit = 5;
 
@@ -77,6 +89,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов с указанием страницы")
+    @Description("Проверка получения списка заказов с указанием номера страницы: должна возвращаться правильная страница")
     public void getOrdersList_WithPage_ShouldReturnCorrectPage() {
         Integer page = 0;
         Integer limit = 10;
@@ -90,6 +104,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов со всеми параметрами")
+    @Description("Проверка получения списка заказов со всеми параметрами фильтрации: должны возвращаться отфильтрованные результаты")
     public void getOrdersList_WithAllParameters_ShouldReturnFilteredResults() {
         Integer courierId = 1;
         List<String> stations = Arrays.asList("1", "2");
@@ -104,6 +120,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Проверка полноты полей в списке заказов")
+    @Description("Проверка что в списке заказов присутствуют все необходимые поля")
     public void getOrdersList_CheckOrderFieldsCompleteness() {
         Response response = orderClient.getOrdersList();
 
@@ -131,6 +149,8 @@ public class OrderListTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов с максимальным лимитом")
+    @Description("Проверка получения списка заказов с максимально допустимым лимитом: должна быть корректная работа")
     public void getOrdersList_WithMaximumLimit_ShouldWorkCorrectly() {
         Integer maxLimit = 30;
 

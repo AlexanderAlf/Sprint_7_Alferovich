@@ -1,6 +1,8 @@
 package order;
 
 import clients.OrderClient;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.Order;
 import org.junit.After;
@@ -27,6 +29,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение заказа по валидному track номеру")
+    @Description("Проверка получения заказа по валидному track номеру: должны возвращаться детали заказа")
     public void getOrderByTrack_WithValidTrack_ShouldReturnOrderDetails() {
         Order order = TestDataGenerator.generateOrderWithColors(Collections.singletonList("BLACK"));
         Response createResponse = orderClient.createOrder(order);
@@ -40,6 +44,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение заказа без track номера")
+    @Description("Проверка получения заказа без указания track номера: должен вернуться код ответа 400")
     public void getOrderByTrack_WithoutTrack_ShouldReturn400() {
         Response response = orderClient.getOrderByTrack(null);
 
@@ -47,6 +53,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение заказа по несуществующему track номеру")
+    @Description("Проверка получения заказа по несуществующему track номеру: должен вернуться код ответа 404")
     public void getOrderByTrack_WithNonExistentTrack_ShouldReturn404() {
         Integer nonExistentTrack = 999999;
 
@@ -56,6 +64,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение заказа по track номеру")
+    @Description("Проверка что ответ содержит корректные данные заказа при получении по track номеру")
     public void getOrderByTrack_ResponseContainsCorrectOrderData() {
         Order originalOrder = TestDataGenerator.generateOrderWithAllFields();
         Response createResponse = orderClient.createOrder(originalOrder);
@@ -78,6 +88,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Проверка наличия всех полей в заказе")
+    @Description("Проверка что при получении заказа по track номеру присутствуют все поля")
     public void getOrderByTrack_CheckAllFieldsPresence() {
         Order order = TestDataGenerator.generateDefaultOrder();
         Response createResponse = orderClient.createOrder(order);
@@ -99,6 +111,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение отмененного заказа по track номеру")
+    @Description("Проверка получения отмененного заказа по track номеру: заказ должен быть отмечен как отмененный")
     public void getOrderByTrack_AfterCancellation_ShouldReturnCancelledOrder() {
         Order order = TestDataGenerator.generateDefaultOrder();
         Response createResponse = orderClient.createOrder(order);
@@ -117,6 +131,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение заказа по track номеру 0")
+    @Description("Проверка получения заказа по track номеру 0: должен вернуться код ответа 404")
     public void getOrderByTrack_WithZeroTrack_ShouldReturnError() {
         Integer zeroTrack = 0;
 
@@ -126,6 +142,8 @@ public class OrderGetByTrackTest {
     }
 
     @Test
+    @DisplayName("Получение заказа по отрицательному track номеру")
+    @Description("Проверка получения заказа по отрицательному track номеру: должен вернуться код ответа 404")
     public void getOrderByTrack_WithNegativeTrack_ShouldReturnError() {
         Integer negativeTrack = -123;
 

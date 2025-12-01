@@ -35,7 +35,7 @@ public class OrderTestHelper {
     }
 
     @Step("Get created order track")
-    public Integer getCreatedOrderTrack() { // Переименован для consistency
+    public Integer getCreatedOrderTrack() {
         return getCurrentOrderTrack();
     }
 

@@ -1,6 +1,8 @@
 package order;
 
 import clients.OrderClient;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.Order;
 import org.junit.After;
@@ -27,6 +29,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа с валидным track номером")
+    @Description("Проверка отмены заказа с валидным track номером: должен вернуться код ответа 200 и ok: true")
     public void cancelOrder_WithValidTrack_ShouldReturn200AndOkTrue() {
         Order order = TestDataGenerator.generateOrderWithColors(Collections.singletonList("BLACK"));
         Response createResponse = orderClient.createOrder(order);
@@ -39,6 +43,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа с пустым track номером")
+    @Description("Проверка отмены заказа с пустым track номером: должен вернуться код ответа 400")
     public void cancelOrder_WithEmptyTrack_ShouldReturn400() {
         String emptyTrack = "";
         Response response = orderClient.cancelOrder(emptyTrack);
@@ -46,6 +52,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа с null track номером")
+    @Description("Проверка отмены заказа с null track номером: должен вернуться код ответа 400")
     public void cancelOrder_WithNullTrack_ShouldReturn400() {
         Response response = orderClient.cancelOrder(null);
 
@@ -53,6 +61,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа с несуществующим track номером")
+    @Description("Проверка отмены заказа с несуществующим track номером: должен вернуться код ответа 404")
     public void cancelOrder_WithNonExistentTrack_ShouldReturn404() {
         String nonExistentTrack = "999999";
 
@@ -62,6 +72,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа с невалидным форматом track номера")
+    @Description("Проверка отмены заказа с невалидным форматом track номера: должен вернуться код ответа 400")
     public void cancelOrder_WithInvalidTrackFormat_ShouldReturn400() {
         String invalidTrack = "invalid_track";
         Response response = orderClient.cancelOrder(invalidTrack);
@@ -69,6 +81,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Повторная отмена уже отмененного заказа")
+    @Description("Проверка повторной отмены уже отмененного заказа: должен вернуться код ответа 404")
     public void cancelOrder_AlreadyCancelled_ShouldReturn404() {
         Order order = TestDataGenerator.generateOrderWithColors(Collections.singletonList("GREY"));
         Response createResponse = orderClient.createOrder(order);
@@ -84,6 +98,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа в процессе выполнения")
+    @Description("Проверка отмены заказа который находится в процессе выполнения: должен вернуться код ответа 409")
     public void cancelOrder_InProgress_ShouldReturn409() {
         String orderTrackInProgress = "123456";
 
@@ -93,6 +109,8 @@ public class OrderCancelTest {
     }
 
     @Test
+    @DisplayName("Отмена заказа")
+    @Description("Проверка структуры ответа при отмене заказа")
     public void cancelOrder_ResponseHasCorrectStructure() {
         Order order = TestDataGenerator.generateDefaultOrder();
         Response createResponse = orderClient.createOrder(order);

@@ -2,6 +2,8 @@ package courier;
 
 import clients.CourierClient;
 import helpers.CourierTestHelper;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.Courier;
 import org.junit.After;
@@ -21,6 +23,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Создание курьера с валидными данными")
+    @Description("Проверка успешного создания курьера с валидными данными: должен вернуться код ответа 201 и ok: true")
     public void createCourier_WithValidData_ShouldReturn201AndOkTrue() {
         Courier courier = TestDataGenerator.generateUniqueCourier();
         Response response = courierClient.createCourier(courier);
@@ -36,6 +40,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Создание курьера с дублирующимся логином")
+    @Description("Проверка создания курьера с уже существующим логином: должен вернуться код ответа 409")
     public void createCourier_WithDuplicateLogin_ShouldReturn409() {
         // Given
         Courier firstCourier = courierHelper.setupTestCourier();
@@ -53,6 +59,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Создание курьера без логина")
+    @Description("Проверка создания курьера без указания логина: должен вернуться код ответа 400")
     public void createCourier_WithoutLogin_ShouldReturn400() {
         Courier courierWithoutLogin = new Courier(null, "valid_password", "Valid Name");
         Response response = courierClient.createCourier(courierWithoutLogin);
@@ -65,6 +73,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Создание курьера без пароля")
+    @Description("Проверка создания курьера без указания пароля: должен вернуться код ответа 400")
     public void createCourier_WithoutPassword_ShouldReturn400() {
         Courier courierWithoutPassword = new Courier("valid_login", null, "Valid Name");
         Response response = courierClient.createCourier(courierWithoutPassword);
@@ -77,6 +87,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Создание курьера без имени")
+    @Description("Проверка создания курьера без указания имени: должно быть успешное создание с кодом ответа 201")
     public void createCourier_WithoutFirstName_ShouldBeSuccessful() {
         Courier courierWithoutFirstName = new Courier(
                 TestDataGenerator.generateUniqueLogin(),
@@ -95,6 +107,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Проверка времени ответа при создании курьера")
+    @Description("Проверка что время ответа при создании курьера должно быть разумным (менее 5 секунд)")
     public void createCourier_ResponseTimeShouldBeReasonable() {
         Courier courier = TestDataGenerator.generateUniqueCourier();
         Response response = courierClient.createCourier(courier);
@@ -109,6 +123,8 @@ public class CourierCreationTest {
     }
 
     @Test
+    @DisplayName("Создание двух курьеров с разными логинами")
+    @Description("Проверка создания двух курьеров с разными логинами: оба должны быть успешно созданы с разными ID")
     public void createCourier_LoginShouldBeUnique() {
         Courier firstCourier = TestDataGenerator.generateUniqueCourier();
         Courier secondCourier = TestDataGenerator.generateUniqueCourier();
